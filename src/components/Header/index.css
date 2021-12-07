@@ -1,0 +1,45 @@
+.header-conteiner{
+    width: 100vw;
+    height: 52px;
+    background-color: darkcyan;
+    display: flex;
+        justify-content: space-around;
+        align-items: center;
+}
+
+.title{
+    font-size: 24px;
+    color: white;
+}
+
+.cart{
+    width: 90px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: black;
+    background-color: aquamarine;
+    font-weight: bold;
+}
+
+.modal-conteiner{
+    width: 250px;
+    height: auto;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 52px;
+    box-shadow: 0px 0px 15px 5px black;
+}
+
+.modal-cart{
+    padding: 8px;
+    display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: center;
+}
+
+.img-miniatura{
+    width: 40px;
+}
