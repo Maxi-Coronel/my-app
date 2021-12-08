@@ -1,4 +1,5 @@
-import { useCardOpen, useCartItem, useIsCardOpen } from '../../context/ContextProduct'
+import { useState } from 'react'
+import { useCardOpen, useCartItem, useDeletFromCart, useIsCardOpen } from '../../context/ContextProduct'
 import './index.css'
 
 export const Header = () => {
@@ -6,6 +7,7 @@ export const Header = () => {
     const isCardOpen = useIsCardOpen()
     const openCard = useCardOpen()
     const cartItem = useCartItem()
+    const deletProduct = useDeletFromCart()
 
     return(
         <div className='header-conteiner'>
@@ -25,7 +27,7 @@ export const Header = () => {
                                 } = item
 
                                 return(
-                                    <div>
+                                    <div onClick={() => deletProduct(item)}>
                                         <img src={image} alt={title} className='img-miniatura'/>
                                         <span>{price}</span>
                                     </div>

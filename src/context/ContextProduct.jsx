@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { productos } from "../components/Item/Items";
 
 const Products = React.createContext()
 
@@ -8,24 +9,39 @@ export function ProductsProvider({ children }){
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
 
-    useEffect(() => {
+    /* useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
         .then(data => setProducts(data))
+    }, []) */
+
+    useEffect(() => {
+        setProducts(productos)
     }, [])
+    
 
     const openCard = () => {
         setIsCardOpen(!isCardOpen)
     }
 
-    const addToCart = (product) => {
-        setCartItem([...cartItem, product])
+    const isOnCart = (product) => {
+        return cartItem?.findIndex(item => item.id === product.id)
     }
 
-    console.log(cartItem);
+    const addToCart = (product) => {
+        if (isOnCart(product) === -1) {
+            setCartItem([...cartItem, product])            
+        }else{
+
+        }
+    }
+
+    const deletFromCart = (product) => {
+        setCartItem(cartItem.filter(item => item.id !== product.id))
+    }
 
     return(
-        <Products.Provider value={{ products, isCardOpen, openCard, addToCart, cartItem }}>
+        <Products.Provider value={{ products, isCardOpen, openCard, addToCart, cartItem, deletFromCart }}>
             {children}
         </Products.Provider>
     )
@@ -45,6 +61,10 @@ export function useAddToCart(){
 
 export function useCartItem(){
     return useContext(Products).cartItem
+}
+
+export function useDeletFromCart(){
+    return useContext(Products).deletFromCart
 }
 
 export default Products
