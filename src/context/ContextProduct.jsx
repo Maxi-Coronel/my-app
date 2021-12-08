@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { productos } from "../components/Item/Items";
+import { productos } from "../components/Items/Items";
 
 const Products = React.createContext()
 
@@ -18,7 +18,6 @@ export function ProductsProvider({ children }){
     useEffect(() => {
         setProducts(productos)
     }, [])
-    
 
     const openCard = () => {
         setIsCardOpen(!isCardOpen)
@@ -28,11 +27,11 @@ export function ProductsProvider({ children }){
         return cartItem?.findIndex(item => item.id === product.id)
     }
 
+
     const addToCart = (product) => {
         if (isOnCart(product) === -1) {
             setCartItem([...cartItem, product])            
         }else{
-
         }
     }
 
@@ -40,11 +39,19 @@ export function ProductsProvider({ children }){
         setCartItem(cartItem.filter(item => item.id !== product.id))
     }
 
+    const deletCart = () => {
+        setCartItem([])
+    }
+
     return(
-        <Products.Provider value={{ products, isCardOpen, openCard, addToCart, cartItem, deletFromCart }}>
+        <Products.Provider value={{ products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
             {children}
         </Products.Provider>
     )
+}
+
+export function useSetProducts(){
+    return useContext(Products).setProducts
 }
 
 export function useIsCardOpen(){
@@ -65,6 +72,10 @@ export function useCartItem(){
 
 export function useDeletFromCart(){
     return useContext(Products).deletFromCart
+}
+
+export function useDeletCart(){
+    return useContext(Products).deletCart
 }
 
 export default Products

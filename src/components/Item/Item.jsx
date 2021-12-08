@@ -1,6 +1,6 @@
 import { useAddToCart } from "../../context/ContextProduct"
 
-export const ProductCard = ({ product }) => {
+export const Item = ({ product }) => {
 
     const addToCart = useAddToCart()
 

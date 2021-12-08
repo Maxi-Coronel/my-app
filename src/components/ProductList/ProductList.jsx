@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Products from "../../context/ContextProduct";
-import { ProductCard } from "../ProductCard/ProductCard";
+import { Item } from "../Item/Item";
 
 const ProductsList = () => {
 
@@ -11,9 +11,9 @@ const ProductsList = () => {
         {
             products?.map((product) => {
                 return(
-                    <ProductCard
+                    <Item
                     key={product.id}
-                    product={product} />                    
+                    product={product} />
                 )
             })
         }
