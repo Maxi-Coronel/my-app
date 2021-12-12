@@ -1,8 +1,7 @@
-import { useAddToCart } from "../../context/ContextProduct"
+
+import { ItemCount } from "../ItemCount/ItemCount"
 
 export const Item = ({ product }) => {
-
-    const addToCart = useAddToCart()
 
     const {
         image,
@@ -17,7 +16,9 @@ export const Item = ({ product }) => {
                     <img className='img' src={image} alt={`${id}-${title}`} />
                 <h5>{title}</h5>
                 <p>{price}</p>
-                <button onClick={() => addToCart(product)}>Add</button>
+                <ItemCount 
+                key={product.id}
+                product={product}/>
                 {/* <ItemCount stock={item.stock} id={item.id} set={setNuevoStock} new={nuevoStock} onAdd={onAdd}/> */}
             </div>
         </div>

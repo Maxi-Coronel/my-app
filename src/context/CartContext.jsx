@@ -8,7 +8,7 @@ export function ProductsProvider({ children }){
     const [products, setProducts] = useState([])
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
-
+    
     /* useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
@@ -19,6 +19,18 @@ export function ProductsProvider({ children }){
         setProducts(productos)
     }, [])
 
+    const onAdd = (cantItems, setCantItems, stock) => {
+        if(cantItems < stock){
+            setCantItems(cantItems +1)
+        }
+    }
+
+    const onSustract = (cantItems, setCantItems) => {
+        if(cantItems > 0){
+            setCantItems(cantItems -1)
+        }
+    }
+
     const openCard = () => {
         setIsCardOpen(!isCardOpen)
     }
@@ -27,11 +39,13 @@ export function ProductsProvider({ children }){
         return cartItem?.findIndex(item => item.id === product.id)
     }
 
-
-    const addToCart = (product) => {
-        if (isOnCart(product) === -1) {
-            setCartItem([...cartItem, product])            
+    const addToCart = (product, cantidad) => {
+        if (isOnCart(product) === -1 && cantidad !== 0){
+            setCartItem([...cartItem, {...product, quantityCart:cantidad}])
         }else{
+            if (product.quantityCart < product.stock) {
+                sumaCantidad(product, cantidad)
+            }
         }
     }
 
@@ -43,11 +57,35 @@ export function ProductsProvider({ children }){
         setCartItem([])
     }
 
+    const sumaCantidad = (product, quantity) => {
+        const cantidad = [...cartItem];
+        cantidad.forEach((c) =>{
+            if (c.quantityCart+quantity <= c.stock && quantity !== 0) {
+                c.id === product.id && (c.quantityCart += quantity)
+                console.log(c.quantityCart);
+                console.log(c.stock);
+            }
+        })
+        setCartItem(cantidad)
+    }
+
     return(
-        <Products.Provider value={{ products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
+        <Products.Provider value={{ onSustract, onAdd, products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
             {children}
         </Products.Provider>
     )
+}
+
+export function UseOnAdd(){
+    return useContext(Products).onAdd
+}
+
+export function UseOnSustract(){
+    return useContext(Products).onSustract
+}
+
+export function UsesetQuantity(){
+    return useContext(Products).setQuantity
 }
 
 export function useSetProducts(){
