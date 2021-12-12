@@ -14,13 +14,13 @@ export const Item = ({ product }) => {
         <div className='flex borderRad-5 tarjeta'>
             <div className='flex black presentacion' key={id}>
                 <Link to={`/product/${id}`}>
-                        <img className='img' src={image} alt={`${id}-${title}`} />
+                    <img className='img' src={image} alt={`${id}-${title}`} />
                     <h5>{title}</h5>
                     <p>{price}</p>
-                    <ItemCount 
-                    key={product.id}
-                    product={product}/>
                 </Link>
+                <ItemCount
+                key={product.id}
+                product={product}/>
             </div>
         </div>
     )

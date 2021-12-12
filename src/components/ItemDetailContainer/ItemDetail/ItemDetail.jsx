@@ -1,11 +1,13 @@
 import React from "react";
 import { ItemCount } from '../../ItemCount/ItemCount'
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { UseIrCart } from "../../../context/CartContext";
 
-const ItemDetail = ({ product }) => {
+export const ItemDetail = ({ product }) => {
+
+    const IrCart = UseIrCart()
 
     const {
-        id,
         title,
         price,
         tituloDescripcion,
@@ -25,11 +27,11 @@ const ItemDetail = ({ product }) => {
                 <h4>{tituloDescripcion}</h4>
                 <p>{descripcion}</p>
                 <p>Cantidad disponible: {stock}</p>
-                {/* {irCart ? (<Link to="/cart"><button className='borderRad-5 agregar'>Terminar compra</button></Link>)
-                        : (<ItemCount stock={stock} id={id} />)} */}
+                {IrCart ? (<Link to="/cart"><button className='borderRad-5 agregar'>Terminar compra</button></Link>)
+                        : (<ItemCount
+                            key={product.id}
+                            product={product}/>)}
             </div>
         </div>
     )
 }
-
-export default ItemDetail;

@@ -5,10 +5,10 @@ import { Item } from "./Item/Item";
 
 const ProductsList = () => {
 
+    const { catId } = useParams();
     const {products} = useContext(Products)
     const [items, setItems] = useState([]);
 
-    const { catId } = useParams();
 
     useEffect(() => {
 
@@ -22,6 +22,7 @@ const ProductsList = () => {
             catId ? setItems(res.filter(item => item.categoria === catId)) : 
             setItems(res);
         })
+        
         .catch((error)=>{
             console.log(error);
         })

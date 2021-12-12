@@ -59,7 +59,7 @@ export const productos = [
         id: '6',
         price: '$1458',
         stock: '3',
-        image: 'http://d26lpennugtm8s.cloudfront.net/stores/086/270/products/733163-mlm25755323314_072017-o-85c162208bf00dcd9d15036946188854-640-0.jpg',
+        image: 'https://th.bing.com/th/id/OIP.tuHKtVOPJBi4J6Ppzxq5pQHaKm?pid=ImgDet&rs=1',
         categoria: 'cuidadoPersonal',
         quantityCart: 0,
         tituloDescripcion: 'Reduce la placa y elimina las bacterias que causan mal aliento',

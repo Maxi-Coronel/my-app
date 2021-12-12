@@ -8,7 +8,8 @@ export function ProductsProvider({ children }){
     const [products, setProducts] = useState([])
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
-    
+    const [irCart, setIrCart] = useState(false);
+
     /* useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
@@ -42,6 +43,7 @@ export function ProductsProvider({ children }){
     const addToCart = (product, cantidad) => {
         if (isOnCart(product) === -1 && cantidad !== 0){
             setCartItem([...cartItem, {...product, quantityCart:cantidad}])
+            setIrCart(true)
         }else{
             if (product.quantityCart < product.stock) {
                 sumaCantidad(product, cantidad)
@@ -70,10 +72,14 @@ export function ProductsProvider({ children }){
     }
 
     return(
-        <Products.Provider value={{ onSustract, onAdd, products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
+        <Products.Provider value={{ irCart, onSustract, onAdd, products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
             {children}
         </Products.Provider>
     )
+}
+
+export function UseIrCart(){
+    return useContext(Products).irCart
 }
 
 export function UseOnAdd(){

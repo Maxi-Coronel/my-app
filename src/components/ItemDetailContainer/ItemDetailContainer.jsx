@@ -1,48 +1,41 @@
 import {useState, useEffect, useContext} from 'react'
-import ItemDetail from './ItemDetail/ItemDetail'
+import { ItemDetail } from './ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
 import Products from '../../context/CartContext'
 
 const ItemDetailContainer = () => {
-    
-    const { prodId } = useParams()
-    
+
+    const { prodId } = useParams();
     const {products} = useContext(Products)
+    const [item, setItem] = useState({});
 
-    const [items, setItems] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [irCart, setIrCart] = useState(false);
-
-    const getItem = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(products)
-        }, 1000);
-    });
-    
     useEffect(() => {
-        setLoading(true)
-        getItem.then((res)=>{
-            prodId ? setItems(res.find(item => item.id === prodId)) : 
-            setItems(res);
+        const traeProductos = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(products)
+            }, 1000);
+        });
+    
+        traeProductos.then((res)=>{
+            prodId ? setItem(res.find(item => item.id === prodId)) : 
+            setItem(res);
         })
+        
         .catch((error)=>{
             console.log(error);
         })
-        .finally(() => {
-            setLoading(false)
-        })
-    }, [])
+    }, [prodId, products])
 
     return (
-        loading ?   <div className='flex divCargando'>
+        /* loading ?   <div className='flex divCargando'>
                             <h1>CASI LISTO...</h1>
                             <img className='cargando' src="https://th.bing.com/th/id/R.7500668d515374c0dd15a7ed1e8bdbd8?rik=KPncNUUV2lQfng&pid=ImgRaw&r=0" alt="cargando" />
-                        </div> 
-                    :   <>
+                        </div>
+                    :    */<>
                             <div className='flex'>
                                 <ItemDetail
-                                key={items.id}
-                                product={items}/>
+                                key={item.id}
+                                product={item}/>
                             </div>
                         </>
     )
