@@ -25,7 +25,7 @@ const ProductsList = () => {
         .catch((error)=>{
             console.log(error);
         })
-    }, [catId])
+    }, [catId, products])
 
     return(
         <div className='flex-wrap'>
