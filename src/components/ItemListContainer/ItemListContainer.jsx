@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Products from "../../context/CartContext";
-import { Item } from "../Item/Item";
+import { Item } from "./Item/Item";
 
 const ProductsList = () => {
 

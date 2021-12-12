@@ -1,11 +1,13 @@
-import {useState, useEffect} from 'react'
-import { productos } from '../Items/Items'
-//import ItemDetail from './ItemDetail'
+import {useState, useEffect, useContext} from 'react'
+import ItemDetail from './ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
+import Products from '../../context/CartContext'
 
 const ItemDetailContainer = () => {
     
     const { prodId } = useParams()
+    
+    const {products} = useContext(Products)
 
     const [items, setItems] = useState({});
     const [loading, setLoading] = useState(false);
@@ -13,15 +15,9 @@ const ItemDetailContainer = () => {
 
     const getItem = new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve(productos)
-        }, 2000);
+            resolve(products)
+        }, 1000);
     });
-
-    const onAdd = (cantidad) => {
-            console.log({...items, cantidad: cantidad});
-            setIrCart(true)
-            //props.setN(0);
-    }
     
     useEffect(() => {
         setLoading(true)
@@ -44,7 +40,9 @@ const ItemDetailContainer = () => {
                         </div> 
                     :   <>
                             <div className='flex'>
-                                {/* <ItemDetail items={items} onAdd={onAdd} irCart={irCart}/> */}
+                                <ItemDetail
+                                key={items.id}
+                                product={items}/>
                             </div>
                         </>
     )

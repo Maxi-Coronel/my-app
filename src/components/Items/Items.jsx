@@ -4,7 +4,7 @@ export const productos = [
         id: '1',
         price: '$1823',
         stock: '8',
-        image: 'https://i.ebayimg.com/images/g/ZOUAAOSwNTheIXFz/s-l300.jpg',
+        image: 'https://www.planeadordecompras.com/files/productos/imagen/144.jpg?s=147127',
         categoria: 'hogar',
         quantityCart: 0,
         tituloDescripcion: 'El limpiador de superficies más versátil',
