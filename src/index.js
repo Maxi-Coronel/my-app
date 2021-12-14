@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+//import {collection, addDoc, getFirestore} from 'firebase/firestore'
 
 // Importe las funciones que necesita desde los SDKs que necesita
 import { initializeApp } from "firebase/app";
+import { ProductsProvider } from './context/CartContext';
 // TODO: Agrega LOS ODS para los productos de Firebase que quieras usar
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,9 +24,18 @@ const firebaseConfig = {
 // Inicializar Firebase
 initializeApp(firebaseConfig);
 
+//const data = []
+
+//const db = getFirestore()
+//const ref = collection(db, 'products')
+
+//data.map((product) => addDoc(ref, product))
+
 ReactDOM.render(
   <React.StrictMode>
+    <ProductsProvider>
     <App />
+    </ProductsProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

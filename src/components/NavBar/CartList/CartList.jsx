@@ -1,8 +1,9 @@
-import { useDeletFromCart } from "../../../context/CartContext"
+import { useContext } from "react"
+import Products from "../../../context/CartContext"
 
 export const CartList = ({ item }) => {
 
-    const deletProduct = useDeletFromCart()
+    const {deletFromCart} = useContext(Products)
 
     const {
         title,
@@ -11,12 +12,15 @@ export const CartList = ({ item }) => {
         quantityCart
     } = item
 
+    const total = price * quantityCart
+
     return(
-        <div>
-            <img src={image} alt={title} className='img-miniatura'/>
-            <span>{price}</span>
-            <span className="pad-5">{quantityCart}</span>
-            <button onClick={() => deletProduct(item)}>X</button>
-        </div>
+        <ul className="flex">
+            <li><img src={image} alt={title} className='img-miniatura'/></li>
+            <li>{price}</li>
+            <li>{quantityCart}</li>
+            <li>{total}</li>
+            <li><button onClick={() => deletFromCart(item)}>X</button></li>
+        </ul>
     )
 }

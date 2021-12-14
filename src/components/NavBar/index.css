@@ -23,7 +23,7 @@
 }
 
 .modal-conteiner{
-    width: 250px;
+    width: 280px;
     height: auto;
     background-color: white;
     position: absolute;
@@ -42,6 +42,18 @@
 
 .modal-cart div{
     width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-cart ul{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-cart ul li{
+    width: 20%;
     padding: 0;
     margin: 0;
 }

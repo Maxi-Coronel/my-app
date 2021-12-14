@@ -1,11 +1,12 @@
-import React, {useState} from "react"
-import { useAddToCart, UseOnSustract ,UseOnAdd } from "../../context/CartContext"
+import React, {useContext, useState} from "react"
+import Products from "../../context/CartContext"
 
 export const ItemCount = ({product}) => {
-
-    const addToCart = useAddToCart()
-    const onSustract = UseOnSustract()
-    const onAdd = UseOnAdd()
+    const {
+        addToCart,
+        onSustract,
+        onAdd
+    } = useContext(Products)
 
     const [cantItems, setCantItems] = useState(0)
 

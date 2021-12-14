@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ItemCount } from '../../ItemCount/ItemCount'
 import { Link } from "react-router-dom"
-import { UseIrCart } from "../../../context/CartContext";
+import Products from "../../../context/CartContext";
 
 export const ItemDetail = ({ product }) => {
 
-    const IrCart = UseIrCart()
+    const {irCart} = useContext(Products)
 
     const {
         title,
@@ -27,7 +27,10 @@ export const ItemDetail = ({ product }) => {
                 <h4>{tituloDescripcion}</h4>
                 <p>{descripcion}</p>
                 <p>Cantidad disponible: {stock}</p>
-                {IrCart ? (<Link to="/cart"><button className='borderRad-5 agregar'>Terminar compra</button></Link>)
+                {irCart ? ( <div>
+                                <Link to="/"><button className='borderRad-5 agregar'>Seguir comprando</button></Link>
+                                <Link to="/cart"><button className='borderRad-5 agregar'>Terminar compra</button></Link>
+                            </div>)
                         : (<ItemCount
                             key={product.id}
                             product={product}/>)}

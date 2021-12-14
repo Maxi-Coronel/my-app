@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { productos } from "../components/Items/Items";
+import React, { useEffect, useState } from "react";
+//import { productos } from "../components/Items/Items";
+import {addDoc, collection, getDocs, getFirestore} from 'firebase/firestore'
 
 const Products = React.createContext()
 
@@ -9,16 +10,56 @@ export function ProductsProvider({ children }){
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
     const [irCart, setIrCart] = useState(false);
+    const db = getFirestore()
+    const ref = collection(db, 'products')
+    const refCart = collection(db, 'cartItem')
+
+
+
+    //const db = getFirestore()
+    //const ref = collection(db, 'products')
+    //const refCart = collection(db, 'cartItems')
+
+
+    //data.map((product) => addDoc(ref, product))
+
+
+
+
+
+   
+
+    useEffect(() => {
+        getDocs(ref)
+        .then((snapShot) => {
+            setProducts(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
+            /* snapShot.docs.map((product) => setProducts(prev => ([...prev, product.data()]))) */
+            //setIsLoading(false)
+          })
+    }, [])
 
     /* useEffect(() => {
+        getDocs(ref)
+        .then((snapShot) => {
+            setCartItem(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
+          })
+    }, []) */
+
+    const getCartItem = () => {
+
+    }
+
+    
+
+
+    /* useEffect(() => {
+        setProducts(productos)
+    }, [])
+    useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
         .then(data => setProducts(data))
     }, []) */
-
-    useEffect(() => {
-        setProducts(productos)
-    }, [])
 
     const onAdd = (cantItems, setCantItems, stock) => {
         if(cantItems < stock){
@@ -42,6 +83,11 @@ export function ProductsProvider({ children }){
 
     const addToCart = (product, cantidad) => {
         if (isOnCart(product) === -1 && cantidad !== 0){
+            /* addDoc(refCart, product)
+            getCartItem()
+
+
+            setIrCart(true) */
             setCartItem([...cartItem, {...product, quantityCart:cantidad}])
             setIrCart(true)
         }else{
@@ -64,62 +110,31 @@ export function ProductsProvider({ children }){
         cantidad.forEach((c) =>{
             if (c.quantityCart+quantity <= c.stock && quantity !== 0) {
                 c.id === product.id && (c.quantityCart += quantity)
-                console.log(c.quantityCart);
-                console.log(c.stock);
             }
         })
         setCartItem(cantidad)
     }
 
+    console.log(products);
+
     return(
-        <Products.Provider value={{ irCart, onSustract, onAdd, products, setProducts, isCardOpen, openCard, addToCart, cartItem, deletFromCart, deletCart }}>
+        <Products.Provider 
+        value={{
+            irCart,
+            products,
+            isCardOpen,
+            cartItem,
+            onSustract,
+            onAdd,
+            setProducts,
+            openCard,
+            addToCart,
+            deletFromCart,
+            deletCart 
+        }}>
             {children}
         </Products.Provider>
     )
-}
-
-export function UseIrCart(){
-    return useContext(Products).irCart
-}
-
-export function UseOnAdd(){
-    return useContext(Products).onAdd
-}
-
-export function UseOnSustract(){
-    return useContext(Products).onSustract
-}
-
-export function UsesetQuantity(){
-    return useContext(Products).setQuantity
-}
-
-export function useSetProducts(){
-    return useContext(Products).setProducts
-}
-
-export function useIsCardOpen(){
-    return useContext(Products).isCardOpen
-}
-
-export function useCardOpen(){
-    return useContext(Products).openCard
-}
-
-export function useAddToCart(){
-    return useContext(Products).addToCart
-}
-
-export function useCartItem(){
-    return useContext(Products).cartItem
-}
-
-export function useDeletFromCart(){
-    return useContext(Products).deletFromCart
-}
-
-export function useDeletCart(){
-    return useContext(Products).deletCart
 }
 
 export default Products
