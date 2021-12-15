@@ -1,32 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { useParams } from "react-router-dom";
-import Products from "../../context/CartContext";
 import { Item } from "./Item/Item";
 
-const ProductsList = () => {
+const ItemListContainer = () => {
 
     const { catId } = useParams();
-    const {products} = useContext(Products)
     const [items, setItems] = useState([]);
-
 
     useEffect(() => {
 
-        const traeProductos = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products)
-            }, 1000);
-        });
-    
-        traeProductos.then((res)=>{
-            catId ? setItems(res.filter(item => item.categoria === catId)) : 
-            setItems(res);
+        const db = getFirestore();
+        const ref = collection(db, 'products');
+        getDocs(ref).then((snapshot)=>{
+            
+            const prod = snapshot.docs.map((doc) => {
+                return(
+                        {id: doc.id,
+                        ...doc.data(),}
+                )
+            })
+            const categorias = prod.filter((i) => i.categoria === `${catId}`);
+            catId === undefined ? setItems(prod) : setItems(categorias)
         })
-        
-        .catch((error)=>{
-            console.log(error);
-        })
-    }, [catId, products])
+    }, [catId])
 
     return(
         <div className='flex-wrap'>
@@ -43,4 +40,4 @@ const ProductsList = () => {
     )
 }
 
-export default ProductsList
+export default ItemListContainer

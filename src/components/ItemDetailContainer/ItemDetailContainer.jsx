@@ -1,43 +1,38 @@
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect} from 'react'
 import { ItemDetail } from './ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
-import Products from '../../context/CartContext'
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
 
     const { prodId } = useParams();
-    const {products} = useContext(Products)
     const [item, setItem] = useState({});
 
     useEffect(() => {
-        const traeProductos = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products)
-            }, 1000);
-        });
-    
-        traeProductos.then((res)=>{
-            prodId ? setItem(res.find(item => item.id === prodId)) : 
-            setItem(res);
+
+        const db = getFirestore();
+        const ref = collection(db, 'products');
+        getDocs(ref).then((snapshot)=>{
+            
+            const prod = snapshot.docs.map((doc) => {
+                return(
+                        {id: doc.id,
+                        ...doc.data(),}
+                )
+            })
+            const produc = prod.find((i) => i.id === `${prodId}`);
+            prodId === undefined ? setItem(prod) : setItem(produc)
         })
-        
-        .catch((error)=>{
-            console.log(error);
-        })
-    }, [prodId, products])
+    }, [prodId])
 
     return (
-        /* loading ?   <div className='flex divCargando'>
-                            <h1>CASI LISTO...</h1>
-                            <img className='cargando' src="https://th.bing.com/th/id/R.7500668d515374c0dd15a7ed1e8bdbd8?rik=KPncNUUV2lQfng&pid=ImgRaw&r=0" alt="cargando" />
-                        </div>
-                    :    */<>
-                            <div className='flex'>
-                                <ItemDetail
-                                key={item.id}
-                                product={item}/>
-                            </div>
-                        </>
+            <>
+                <div className='flex'>
+                    <ItemDetail
+                    key={item.id}
+                    product={item}/>
+                </div>
+            </>
     )
 }
 

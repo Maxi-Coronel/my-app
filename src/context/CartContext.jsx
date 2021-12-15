@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 //import { productos } from "../components/Items/Items";
-import {addDoc, collection, getDocs, getFirestore} from 'firebase/firestore'
+import {addDoc, collection, getDocs, doc, getFirestore, updateDoc} from 'firebase/firestore'
 
 const Products = React.createContext()
 
@@ -14,47 +14,29 @@ export function ProductsProvider({ children }){
     const ref = collection(db, 'products')
     const refCart = collection(db, 'cartItem')
 
-
-
-    //const db = getFirestore()
-    //const ref = collection(db, 'products')
-    //const refCart = collection(db, 'cartItems')
-
-
-    //data.map((product) => addDoc(ref, product))
-
-
-
-
-
-   
-
     useEffect(() => {
         getDocs(ref)
         .then((snapShot) => {
             setProducts(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
-            /* snapShot.docs.map((product) => setProducts(prev => ([...prev, product.data()]))) */
-            //setIsLoading(false)
           })
     }, [])
 
-    /* useEffect(() => {
-        getDocs(ref)
-        .then((snapShot) => {
-            setCartItem(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
-          })
-    }, []) */
-
     const getCartItem = () => {
-
+        getDocs(refCart)
+            .then((snapShot) => {
+                setCartItem(snapShot.docs.map((doc) => ({...doc.data()})))
+            })
     }
 
-    
+    useEffect(() => {
+        getCartItem()
+    }, [])
 
 
     /* useEffect(() => {
         setProducts(productos)
     }, [])
+    
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
@@ -83,17 +65,20 @@ export function ProductsProvider({ children }){
 
     const addToCart = (product, cantidad) => {
         if (isOnCart(product) === -1 && cantidad !== 0){
-            /* addDoc(refCart, product)
-            getCartItem()
-
-
-            setIrCart(true) */
-            setCartItem([...cartItem, {...product, quantityCart:cantidad}])
-            setIrCart(true)
+            addDoc(refCart, product)
+                .then(({id}) => {
+                    const ref = doc(db, 'cartItem', id)
+                    updateDoc(ref, { cartId: id, quantityCart:cantidad})
+                })
+                .then(() => {
+                    getCartItem()
+                })
         }else{
-            if (product.quantityCart < product.stock) {
-                sumaCantidad(product, cantidad)
-            }
+            const ref = cartItem.find(item => item.pid === product.pid)
+            const pro = doc(db, 'cartItem', ref.cartId)
+            updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
+                getCartItem()
+            })
         }
     }
 
