@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useContext } from "react"
-import { CartList } from '../CartList/CartList'
+import { CartList } from './CartList/CartList'
 import Products from '../../../context/CartContext'
 import { Link } from "react-router-dom"
 
@@ -9,23 +9,9 @@ export const CartWidget = () => {
         isCardOpen,
         openCard,
         cartItem,
+        total,
         deletCart
     } = useContext(Products)
-
-    const [suma, setSuma]= useState(0)
-    
-    useEffect(() => {
-
-        let valor = 0
-        
-            cartItem.forEach ((e) => {
-                (valor += e.price)
-            });
-            
-            setSuma(valor)
-    }, [cartItem])
-
-    console.log(suma);
 
     return(
         <>
@@ -49,6 +35,7 @@ export const CartWidget = () => {
                             )
                         })
                     }
+                    <span>total ${total()}</span>
                     <button onClick={() => deletCart()}>Borrar todo</button>
                     <Link to="/cart">Carrito</Link>
                 </div>

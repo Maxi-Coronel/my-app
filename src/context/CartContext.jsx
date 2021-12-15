@@ -43,6 +43,12 @@ export function ProductsProvider({ children }){
         .then(data => setProducts(data))
     }, []) */
 
+    const total = () => {
+        const sumaTotal = cartItem.reduce((x, y) => x + y.price * y.quantityCart, 0);
+        console.log(cartItem);
+        return sumaTotal;
+    };
+
     const onAdd = (cantItems, setCantItems, stock) => {
         if(cantItems < stock){
             setCantItems(cantItems +1)
@@ -109,6 +115,7 @@ export function ProductsProvider({ children }){
             products,
             isCardOpen,
             cartItem,
+            total,
             onSustract,
             onAdd,
             setProducts,

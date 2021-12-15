@@ -1,10 +1,13 @@
-import { CartList } from "../NavBar/CartList/CartList"
+import { CartList } from "../NavBar/CartWidget/CartList/CartList"
 import Products from "../../context/CartContext"
 import { useContext } from "react"
 
 export const Cart = () => {
 
-    const {cartItem} = useContext(Products)
+    const {
+        cartItem,
+        total
+    } = useContext(Products)
 
     return(
         <>
@@ -17,6 +20,7 @@ export const Cart = () => {
                 )
             })
         }
+        <span>TOTAL ${total()}</span>
         </>
     )
 }
