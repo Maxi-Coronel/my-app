@@ -8,6 +8,7 @@
 
 body{
   background-color: #fafafa;
+  width: 100%;
 }
 
 .flex{
@@ -159,4 +160,49 @@ font-weight: bold;
   width: 486px;
   border: 1px solid black;
   border-radius: 20px;
+}
+
+.border-down{
+  border-bottom: 1px solid black;
+}
+
+.cartPrice{
+  font-size: 26px;
+}
+
+.cartImg{
+  width: 100px;
+}
+
+.w-25{
+  width: 25%;
+}
+
+.w-50{
+  width: 50%;
+}
+
+.w-75{
+  width: 75%;
+}
+
+.w-90{
+  width: 90%;
+}
+
+.p-10{
+  padding: 3%;
+}
+
+.m-auto{
+  margin: 0 auto;
+}
+
+.m-left{
+  margin-right: 30px;
+  align-items: left;
+}
+
+.background-white{
+  background-color: white;
 }

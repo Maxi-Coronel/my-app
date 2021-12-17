@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { productos } from "../components/Items/Items";
+import { productos } from "../components/Items/Items";
 import {addDoc, collection, getDocs, doc, getFirestore, updateDoc} from 'firebase/firestore'
 
 const Products = React.createContext()
@@ -9,7 +9,7 @@ export function ProductsProvider({ children }){
     const [products, setProducts] = useState([])
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
-    const [irCart, setIrCart] = useState(false);
+    /* const [irCart, setIrCart] = useState(false); */
     const db = getFirestore()
     const ref = collection(db, 'products')
     const refCart = collection(db, 'cartItem')
@@ -33,11 +33,11 @@ export function ProductsProvider({ children }){
     }, [])
 
 
-    /* useEffect(() => {
-        setProducts(productos)
+    useEffect(() => {
+        setCartItem(productos)
     }, [])
     
-    useEffect(() => {
+    /* useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
         .then(data => setProducts(data))
@@ -45,7 +45,6 @@ export function ProductsProvider({ children }){
 
     const total = () => {
         const sumaTotal = cartItem.reduce((x, y) => x + y.price * y.quantityCart, 0);
-        console.log(cartItem);
         return sumaTotal;
     };
 
@@ -96,22 +95,10 @@ export function ProductsProvider({ children }){
         setCartItem([])
     }
 
-    const sumaCantidad = (product, quantity) => {
-        const cantidad = [...cartItem];
-        cantidad.forEach((c) =>{
-            if (c.quantityCart+quantity <= c.stock && quantity !== 0) {
-                c.id === product.id && (c.quantityCart += quantity)
-            }
-        })
-        setCartItem(cantidad)
-    }
-
-    console.log(products);
-
     return(
         <Products.Provider 
         value={{
-            irCart,
+            /* irCart, */
             products,
             isCardOpen,
             cartItem,

@@ -1,8 +1,18 @@
 import { Link } from 'react-router-dom'
 import { CartWidget } from './CartWidget/CartWidget'
 import './index.css'
+import Products from '../../context/CartContext'
+import { useContext, useState } from 'react'
 
 export const NavBar = () => {
+
+     const { cartItem } = useContext(Products)
+
+     const [ver, setVer] = useState(false)
+
+     cartItem !== [] ? setVer(true) : setVer(false)
+
+     console.log(ver);
 
     const categorias = [
         { id:'a', direccion:'/', texto:'INICIO', img:'https://www.amway.com/medias/amway-logo-black.svg?context=bWFzdGVyfGltYWdlc3w0OTI1fGltYWdlL3N2Zyt4bWx8aW1hZ2VzL2g3YS9oNTYvODg4ODM0NDI0ODM1MC5zdmd8YmI0MmY2MzMxZjc2ZmVkZjAzNDAxMjhmOWRlYjYyMzc4ODJmZWQ2ZTQ1MmQ4NDA5YjM2Y2VhNDc2NjFmNzcxYg'},
@@ -13,7 +23,8 @@ export const NavBar = () => {
     ]
 
     return(
-        <div className='header-conteiner'>
+        ver !== false
+        ?<div className='header-conteiner'>
             <ul className='flex'>
                 {categorias?.map((cat) => {
                     return (
@@ -21,7 +32,16 @@ export const NavBar = () => {
                     )
                 })}
             </ul>
-            <CartWidget />
+           <CartWidget />
+        </div>
+        :<div className='header-conteiner'>
+            <ul className='flex'>
+                {categorias?.map((cat) => {
+                    return (
+                        <li className='flex' key={cat.id}><Link to={cat.direccion}>{cat.texto}</Link></li>
+                    )
+                })}
+            </ul>
         </div>
     )
 }

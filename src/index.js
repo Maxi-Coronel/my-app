@@ -13,7 +13,7 @@ import { ProductsProvider } from './context/CartContext';
 
 // Configuración de Firebase de tu aplicación web
 const firebaseConfig = {
-  apiKey: "AIzaSyDSA6lwTo6pgVSe3GxDYIR-4RiQMn1ETDA",
+  apiKey: process.env.API_KEY,//"AIzaSyDSA6lwTo6pgVSe3GxDYIR-4RiQMn1ETDA",
   authDomain: "amwayfirebase-35c02.firebaseapp.com",
   projectId: "amwayfirebase-35c02",
   storageBucket: "amwayfirebase-35c02.appspot.com",
@@ -34,7 +34,7 @@ initializeApp(firebaseConfig);
 ReactDOM.render(
   <React.StrictMode>
     <ProductsProvider>
-    <App />
+      <App />
     </ProductsProvider>
   </React.StrictMode>,
   document.getElementById('root')

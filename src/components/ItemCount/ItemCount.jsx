@@ -16,7 +16,7 @@ export const ItemCount = ({product}) => {
     } = product
 
     return(
-        <>
+        <div className="w-25">
         <h3>{title}</h3>
         <div className='flex-center'>
             <button className='pad-5' onClick={() => onSustract(cantItems, setCantItems)}>-</button>
@@ -24,6 +24,6 @@ export const ItemCount = ({product}) => {
             <button className='pad-5' onClick={() => onAdd(cantItems, setCantItems, stock)}>+</button>
         </div>
         <button onClick={() => addToCart(product, cantItems)}>Add</button>
-        </>
+        </div>
     )
 }

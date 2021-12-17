@@ -1,6 +1,6 @@
-import { CartList } from "../NavBar/CartWidget/CartList/CartList"
 import Products from "../../context/CartContext"
 import { useContext } from "react"
+import { CartProd } from "./CartProd/CartProd"
 
 export const Cart = () => {
 
@@ -10,17 +10,17 @@ export const Cart = () => {
     } = useContext(Products)
 
     return(
-        <>
-        {
-            cartItem?.map((item) => {
-                return(
-                    <CartList
-                    key={item.id}
-                    item={item}/>
-                )
-            })
-        }
-        <span>TOTAL ${total()}</span>
-        </>
+        <body className="background-white">
+            {
+                cartItem?.map((item) => {
+                    return(
+                        <CartProd
+                        key={item.id}
+                        item={item}/>
+                    )
+                })
+            }
+            <span>TOTAL ${total()}</span>
+        </body>
     )
 }
