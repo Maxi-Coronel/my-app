@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { productos } from "../components/Items/Items";
-import {addDoc, collection, getDocs, doc, getFirestore, updateDoc} from 'firebase/firestore'
+import {addDoc, collection, getDocs, doc, getFirestore, updateDoc, deleteDoc} from 'firebase/firestore'
 
 const Products = React.createContext()
 
@@ -9,6 +8,7 @@ export function ProductsProvider({ children }){
     const [products, setProducts] = useState([])
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
+    const [userEmail, setUserEmail] = useState('')
     /* const [irCart, setIrCart] = useState(false); */
     const db = getFirestore()
     const ref = collection(db, 'products')
@@ -30,12 +30,12 @@ export function ProductsProvider({ children }){
 
     useEffect(() => {
         getCartItem()
-    }, [])
+    }, [cartItem])
 
-
+/* 
     useEffect(() => {
         setCartItem(productos)
-    }, [])
+    }, []) */
     
     /* useEffect(() => {
         fetch('https://fakestoreapi.com/products')
@@ -48,9 +48,14 @@ export function ProductsProvider({ children }){
         return sumaTotal;
     };
 
-    const onAdd = (cantItems, setCantItems, stock) => {
+    const onAdd = (cantItems, setCantItems, stock, cantidad, product) => {
         if(cantItems < stock){
-            setCantItems(cantItems +1)
+            setCantItems(cantItems +1);
+            /* const ref = cartItem.find(item => item.id === product.id)
+            const pro = doc(db, 'products', product.id)
+            updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
+                getCartItem()
+            }) */
         }
     }
 
@@ -79,20 +84,33 @@ export function ProductsProvider({ children }){
                     getCartItem()
                 })
         }else{
-            const ref = cartItem.find(item => item.pid === product.pid)
-            const pro = doc(db, 'cartItem', ref.cartId)
-            updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
-                getCartItem()
-            })
+            const ref = cartItem.find(item => item.id === product.id)
+            if (ref.quantityCart +cantidad <= product.stock) {
+                const pro = doc(db, 'cartItem', ref.cartId)
+                updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
+                    getCartItem()
+                })
+            }else{
+                alert('La cantidad en el carrito alcanzo el stock disponible')
+            }
         }
     }
 
     const deletFromCart = (product) => {
-        setCartItem(cartItem.filter(item => item.id !== product.id))
+        deleteDoc(doc(db, "cartItem", product.cartId));
+       //setCartItem(cartItem.filter(item => item.id !== product.id))
     }
 
     const deletCart = () => {
-        setCartItem([])
+        cartItem?.map((product) => {
+            return(
+                deleteDoc(doc(db, "cartItem", product.cartId))
+            )
+        })
+    }
+
+    const getUser = () => {
+        setUserEmail('maxicoronel1992@gmail.com')
     }
 
     return(
@@ -102,6 +120,8 @@ export function ProductsProvider({ children }){
             products,
             isCardOpen,
             cartItem,
+            userEmail,
+            getUser,
             total,
             onSustract,
             onAdd,

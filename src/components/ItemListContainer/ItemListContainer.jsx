@@ -28,11 +28,11 @@ const ItemListContainer = () => {
     return(
         <div className='flex-wrap'>
         {
-            items?.map((items) => {
+            items?.map((item) => {
                 return(
                     <Item
-                    key={items.id}
-                    product={items} />
+                    key={item.id}
+                    product={item} />
                 )
             })
         }

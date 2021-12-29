@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import { ItemDetail } from './ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
 
@@ -11,17 +11,13 @@ const ItemDetailContainer = () => {
     useEffect(() => {
 
         const db = getFirestore();
-        const ref = collection(db, 'products');
-        getDocs(ref).then((snapshot)=>{
-            
-            const prod = snapshot.docs.map((doc) => {
-                return(
-                        {id: doc.id,
-                        ...doc.data(),}
-                )
+        const ref = doc(db, 'products', prodId);
+        getDoc(ref).then((snapshot)=>{
+
+            setItem({
+                id: snapshot.id,
+                ...snapshot.data(),
             })
-            const produc = prod.find((i) => i.id === `${prodId}`);
-            prodId === undefined ? setItem(prod) : setItem(produc)
         })
     }, [prodId])
 
