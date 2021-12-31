@@ -9,7 +9,6 @@ export function ProductsProvider({ children }){
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
     const [userEmail, setUserEmail] = useState('')
-    /* const [irCart, setIrCart] = useState(false); */
     const db = getFirestore()
     const ref = collection(db, 'products')
     const refCart = collection(db, 'cartItem')
@@ -30,18 +29,7 @@ export function ProductsProvider({ children }){
 
     useEffect(() => {
         getCartItem()
-    }, [cartItem])
-
-/* 
-    useEffect(() => {
-        setCartItem(productos)
-    }, []) */
-    
-    /* useEffect(() => {
-        fetch('https://fakestoreapi.com/products')
-        .then(res => res.json())
-        .then(data => setProducts(data))
-    }, []) */
+    }, [])
 
     const total = () => {
         const sumaTotal = cartItem.reduce((x, y) => x + y.price * y.quantityCart, 0);
@@ -51,11 +39,6 @@ export function ProductsProvider({ children }){
     const onAdd = (cantItems, setCantItems, stock, cantidad, product) => {
         if(cantItems < stock){
             setCantItems(cantItems +1);
-            /* const ref = cartItem.find(item => item.id === product.id)
-            const pro = doc(db, 'products', product.id)
-            updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
-                getCartItem()
-            }) */
         }
     }
 
@@ -66,7 +49,11 @@ export function ProductsProvider({ children }){
     }
 
     const openCard = () => {
-        setIsCardOpen(!isCardOpen)
+        setIsCardOpen(true)
+    }
+
+    const closeCard = () => {
+        setIsCardOpen(false)
     }
 
     const isOnCart = (product) => {
@@ -98,7 +85,6 @@ export function ProductsProvider({ children }){
 
     const deletFromCart = (product) => {
         deleteDoc(doc(db, "cartItem", product.cartId));
-       //setCartItem(cartItem.filter(item => item.id !== product.id))
     }
 
     const deletCart = () => {
@@ -109,14 +95,13 @@ export function ProductsProvider({ children }){
         })
     }
 
-    const getUser = () => {
-        setUserEmail('maxicoronel1992@gmail.com')
+    const getUser = (form) => {
+        setUserEmail(form.email)
     }
 
     return(
         <Products.Provider 
         value={{
-            /* irCart, */
             products,
             isCardOpen,
             cartItem,

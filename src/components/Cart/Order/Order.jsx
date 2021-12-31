@@ -6,7 +6,8 @@ import { Mensaje } from './Mensaje/Mensaje'
 
 export const Order = () => {
 
-    const email = 'rocioviotto@gmail.com'
+    const {userEmail} = useContext(Products)
+    const email = userEmail
     const [order, setOrder] = useState([])
 
 
@@ -31,7 +32,7 @@ export const Order = () => {
 
             setOrder(orden.filter((x) => x.buyer.email === email))
         });
-    }, [email]);
+    }, []);
 
     return (
         <div>

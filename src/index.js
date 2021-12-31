@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 
 // Importe las funciones que necesita desde los SDKs que necesita
 import { initializeApp } from "firebase/app";
-import { Providers } from './Providers/Providers';
 import { ProductsProvider } from './context/CartContext';
 // TODO: Agrega LOS ODS para los productos de Firebase que quieras usar
 // https://firebase.google.com/docs/web/setup#available-libraries

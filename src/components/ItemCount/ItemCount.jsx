@@ -1,5 +1,5 @@
 //import { doc, getDoc, getFirestore } from "firebase/firestore"
-import React, {useContext, useState, useEffect} from "react"
+import React, {useContext, useState} from "react"
 import Products from "../../context/CartContext"
 
 export const ItemCount = ({product}) => {

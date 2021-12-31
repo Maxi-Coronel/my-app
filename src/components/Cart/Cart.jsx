@@ -10,15 +10,17 @@ export const Cart = () => {
         cartItem,
         total,
         deletCart,
-        getUser
+        getUser,
+        userEmail
     } = useContext(Products)
 
-    const [form, getForm] = useState({email: '', password: ''});
+    const [form, getForm] = useState({nombre: '', email: '', password: ''});
     const [goTicket, setGoTicket] = useState(false);
 
     const date = new Date();
 
-    const finalizarCompra = () => {
+    const finalizarCompra = (e) => {
+        e.preventDefault()
         getUser(form);
         const db = getFirestore();
         const ref = collection(db, 'ticket');
@@ -32,15 +34,17 @@ export const Cart = () => {
         addDoc(ref, newOrder);
         setGoTicket(true);
         deletCart();
+        console.log(userEmail);
     }
 
     const llenaForm = (e) => {
-        const {name, value} = e.target
+        const {name, value} = e.target;
         getForm({
             ...form,
             [name]: value,
         })
     }
+
 
     return(
 <div>
