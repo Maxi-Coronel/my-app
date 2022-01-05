@@ -15,12 +15,12 @@ export const CartList = ({ item }) => {
     const total = price * quantityCart
 
     return(
-        <ul className="flex">
+        <ul className="flex-center">
             <li><img src={image} alt={title} className='img-miniatura'/></li>
-            <li>{price}</li>
+            <li>${price}</li>
             <li>{quantityCart}</li>
-            <li>{total}</li>
-            <li><button onClick={() => deletFromCart(item)}>X</button></li>
+            <li>${total}</li>
+            <li><button className="ocultar btn1-red" onClick={() => deletFromCart(item)}>X</button></li>
         </ul>
     )
 }

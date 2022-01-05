@@ -4,7 +4,7 @@ import { NavBar } from './components/NavBar/NavBar';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer'
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
 import { Cart } from './components/Cart/Cart';
-import { AddUsers } from './components/AddUsers/AddUsers';
+import { Order } from './components/Cart/Order/Order';
 
 function App() {
 
@@ -16,7 +16,9 @@ function App() {
             <Route path='/categoria/:catId' element={<ItemListContainer />} />
             <Route path='/product/:prodId' element={<ItemDetailContainer />} />
             <Route path='/cart' element={<Cart />} />
-            <Route path='/perfil' element={<AddUsers />} />
+            <Route path='/ticket' element={<Order />} />
+            {/* <Route path='/account' element={<Account />} />
+            <Route path='/registro' element={<Registro />} /> */}
           </Routes>
     </BrowserRouter>
   );

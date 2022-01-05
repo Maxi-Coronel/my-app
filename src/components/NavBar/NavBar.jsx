@@ -22,7 +22,7 @@ export const NavBar = () => {
                     )
                 })}
             </ul>
-            <div>
+            <div className='flex-center'>
                 <CartWidget />
                 <UserWidget />
             </div>

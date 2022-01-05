@@ -7,27 +7,30 @@ const ItemDetailContainer = () => {
 
     const { prodId } = useParams();
     const [item, setItem] = useState({});
+    const [isCart, setIsCart] = useState(false)
 
     useEffect(() => {
-
         const db = getFirestore();
         const ref = doc(db, 'products', prodId);
         getDoc(ref).then((snapshot)=>{
-
             setItem({
                 id: snapshot.id,
                 ...snapshot.data(),
             })
+            setIsCart(true)
         })
     }, [prodId])
 
     return (
-            <>
-                <div className='flex'>
+            <>{
+                isCart 
+                ?<div className='flex'>
                     <ItemDetail
                     key={item.id}
                     product={item}/>
                 </div>
+                : <p>Loading...</p>
+            }
             </>
     )
 }

@@ -3,6 +3,7 @@ import { useContext, useState } from "react"
 import { CartProd } from "./CartProd/CartProd"
 import { addDoc, collection, getFirestore } from "firebase/firestore"
 import { Order } from "./Order/Order"
+import { Link } from "react-router-dom"
 
 export const Cart = () => {
 
@@ -10,47 +11,39 @@ export const Cart = () => {
         cartItem,
         total,
         deletCart,
-        getUser,
-        userEmail
+        userEmail,
+        openUser
     } = useContext(Products)
 
-    const [form, getForm] = useState({nombre: '', email: '', password: ''});
     const [goTicket, setGoTicket] = useState(false);
 
     const date = new Date();
 
-    const finalizarCompra = (e) => {
-        e.preventDefault()
-        getUser(form);
-        const db = getFirestore();
-        const ref = collection(db, 'ticket');
-        const newOrder = {
-            buyer:{name: form.nombre,
-                   email: form.email,},
-            item: cartItem,
-            date: date,
-            total: total()
+    const finalizarCompra = () => {
+        if (userEmail.length === 0) {
+            window.scrollTo(0, 0)
+            openUser()
+        }else {
+            const db = getFirestore();
+            const ref = collection(db, 'ticket');
+            const newOrder = {
+                buyer:{name: userEmail[0].nombre,
+                    email: userEmail[0].email,},
+                item: cartItem,
+                date: date,
+                total: total()
+            }
+            addDoc(ref, newOrder);
+            setGoTicket(true);
+            deletCart();
         }
-        addDoc(ref, newOrder);
-        setGoTicket(true);
-        deletCart();
-        console.log(userEmail);
     }
-
-    const llenaForm = (e) => {
-        const {name, value} = e.target;
-        getForm({
-            ...form,
-            [name]: value,
-        })
-    }
-
 
     return(
-<div>
         <>
         {!goTicket ?(
-            <div className="background-white w-80 m-auto sombra-gray">
+            <div className="w-80 m-auto cart">
+                <Link to='/'><button className="btn1 del-cart" onClick={deletCart}>Borrar carrito</button></Link>
                 {
                     cartItem?.map((item) => {
                         return(
@@ -61,23 +54,15 @@ export const Cart = () => {
                     })
                 }
                 <div>
-                    <span>TOTAL ${total()}</span>
+                    <p className="total">TOTAL <b>${total()}</b></p>
                 </div>
                 <div>
-                    <button onClick={deletCart}>Borrar carrito</button>
+                    <button className="ocultar btn1" onClick={finalizarCompra}>Finalizar comprar</button>
                 </div>
-                <form method="POST" onSubmit={finalizarCompra}>
-                    <input type="nombre" name="nombre" placeholder="nombre" onChange={llenaForm} />
-                    <input type="email" name="email" placeholder="email" onChange={llenaForm} />
-                    <input type="password" name="password" placeholder="contraseña" onChange={llenaForm} />
-                    <button>Comprar</button>
-                </form>
             </div>)
             : ( <div>
                { <Order />}
             </div>)}
         </>
-        
-        </div>
     )
 }

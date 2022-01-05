@@ -1,6 +1,5 @@
 import Products from "../../../context/CartContext"
 import { useContext } from "react"
-import { ItemCount } from "../../ItemCount/ItemCount"
 
 export const CartProd = ({ item }) => {
     
@@ -24,17 +23,12 @@ export const CartProd = ({ item }) => {
                     <h2>{title}</h2>
                     <h3>{tituloDescripcion}</h3>
                 </div>
-                <div className="w-25">
-                    <ItemCount
-                    key={item.id}
-                    product={item}/>
-                </div>
-                <div className="w-25 flex-column">
+                <div className="w-50 flex-column center">
                     <span className='cartPrice'>Cantidad {quantityCart}</span>
                     <span className='cartPrice'>${total}</span>
                 </div>
             </div>
-            <button onClick={() => deletFromCart(item)} className="p-1 m-auto">X</button>
+            <button onClick={() => deletFromCart(item)} className="p-1 m-auto btn1-red">X</button>
         </div>
     )
 }

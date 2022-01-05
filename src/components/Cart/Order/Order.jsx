@@ -7,9 +7,8 @@ import { Mensaje } from './Mensaje/Mensaje'
 export const Order = () => {
 
     const {userEmail} = useContext(Products)
-    const email = userEmail
+    const email = userEmail[0]?.email
     const [order, setOrder] = useState([])
-
 
     useEffect(() => {
         const db = getFirestore();
@@ -29,26 +28,25 @@ export const Order = () => {
                     date: normalizedCreatedAt,
                 };
             });
-
             setOrder(orden.filter((x) => x.buyer.email === email))
         });
     }, []);
 
     return (
-        <div>
+        <div className='mensaje'>
             {
                 order?.length === 0 ? (
                     <h1>Cargando...</h1>
                 ) : (
                     <>
-                        <h1>Acá te dejamos tu tickets de la compra</h1>
+                        <h1>Acá te dejamos tus tickets de compra</h1>
                         {order.map((ord) => (
                             <Mensaje key={ord.id} ord={ord}/>
                         ))}
                     </>
                 )
             }
-            <Link to='/'>Volver al Home</Link>
+            <Link to='/'><button className='btn'>Volver al Home</button></Link>
         </div>
     )
 }

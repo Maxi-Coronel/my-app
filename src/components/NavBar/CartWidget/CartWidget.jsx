@@ -10,37 +10,44 @@ export const CartWidget = () => {
         openCard,
         cartItem,
         total,
-        deletCart
+        deletCart,
+        quantityTotal,
     } = useContext(Products)
 
     return(
         <>
-        <img className='img-miniatura' onClick={openCard} src='https://images.vexels.com/media/users/3/132103/isolated/preview/2b512b5ece5d914e68950bfdbf73b481-carrito-de-compras-icono-de-c--rculo-by-vexels.png' alt="carrito" />
-        {
-            isCardOpen &&
-            (<div className='modal-conteiner'>
-                <div className='modal-cart'>
-                    <ul className="flex">
-                        <li>img</li>
-                        <li>precio</li>
-                        <li>cant</li>
-                        <li>total</li>
-                    </ul>
-                    {
-                        cartItem?.map((item) => {
-                            return(
-                                <CartList
-                                key={item.id}
-                                item={item}/>
-                            )
-                        })
-                    }
-                    <span>total ${total()}</span>
-                    <button onClick={() => deletCart()}>Borrar todo</button>
-                    <Link to="/cart">Carrito</Link>
-                </div>
-            </div>)
-        }
+            <button onClick={openCard} className="ocultar btn">Carrito <b>{quantityTotal()}</b></button>
+            {cartItem?.length === 0 ? <></>
+                :   (
+                    isCardOpen &&
+                    (<div className='modal-conteiner'>
+                        <div className='modal-cart ocultar'>
+                            <ul className="flex">
+                                <li>img</li>
+                                <li>precio</li>
+                                <li>cant</li>
+                                <li>total</li>
+                            </ul>
+                            {
+                                cartItem?.map((item) => {
+                                    return(
+                                        <CartList
+                                        key={item.id}
+                                        item={item}/>
+                                    )
+                                })
+                            }
+                            <span>total ${total()}</span>
+                            <div className="flex-center">
+                                <button className="btn" onClick={() => deletCart()}>Borrar todo</button>
+                                <Link to="/cart"><button className="btn">Carrito</button></Link>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    )
+                )
+            }
         </>
     )
 }

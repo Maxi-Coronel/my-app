@@ -8,7 +8,8 @@ export function ProductsProvider({ children }){
     const [products, setProducts] = useState([])
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
-    const [userEmail, setUserEmail] = useState('')
+    const [isUserOpen, setIsUserOpen] = useState(false)
+    const [userEmail, setUserEmail] = useState([])
     const db = getFirestore()
     const ref = collection(db, 'products')
     const refCart = collection(db, 'cartItem')
@@ -18,7 +19,7 @@ export function ProductsProvider({ children }){
         .then((snapShot) => {
             setProducts(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
           })
-    }, [])
+    },[])    
 
     const getCartItem = () => {
         getDocs(refCart)
@@ -27,17 +28,19 @@ export function ProductsProvider({ children }){
             })
     }
 
-    useEffect(() => {
-        getCartItem()
-    }, [])
 
     const total = () => {
         const sumaTotal = cartItem.reduce((x, y) => x + y.price * y.quantityCart, 0);
         return sumaTotal;
     };
 
-    const onAdd = (cantItems, setCantItems, stock, cantidad, product) => {
-        if(cantItems < stock){
+    const quantityTotal = () => {
+        const sumaTotal = cartItem.reduce((x, y) => x + y.quantityCart, 0);
+        return sumaTotal;
+    };
+
+    const onAdd = (cantItems, setCantItems, stock) => {
+        if((cantItems) < stock){
             setCantItems(cantItems +1);
         }
     }
@@ -49,11 +52,11 @@ export function ProductsProvider({ children }){
     }
 
     const openCard = () => {
-        setIsCardOpen(true)
+        setIsCardOpen(!isCardOpen)
     }
 
-    const closeCard = () => {
-        setIsCardOpen(false)
+    const openUser = () => {
+        setIsUserOpen(!isUserOpen)
     }
 
     const isOnCart = (product) => {
@@ -72,19 +75,18 @@ export function ProductsProvider({ children }){
                 })
         }else{
             const ref = cartItem.find(item => item.id === product.id)
-            if (ref.quantityCart +cantidad <= product.stock) {
+            if (ref.quantityCart + cantidad <= product.stock) {
                 const pro = doc(db, 'cartItem', ref.cartId)
-                updateDoc(pro, { quantityCart: ref.quantityCart +cantidad }).then(() => {
+                updateDoc(pro, { quantityCart: ref.quantityCart + cantidad }).then(() => {
                     getCartItem()
                 })
-            }else{
-                alert('La cantidad en el carrito alcanzo el stock disponible')
             }
         }
     }
 
     const deletFromCart = (product) => {
         deleteDoc(doc(db, "cartItem", product.cartId));
+        getCartItem()
     }
 
     const deletCart = () => {
@@ -93,11 +95,30 @@ export function ProductsProvider({ children }){
                 deleteDoc(doc(db, "cartItem", product.cartId))
             )
         })
+        getCartItem()
     }
 
-    const getUser = (form) => {
-        setUserEmail(form.email)
-    }
+    /* const getUser = (form) => {
+        setUserEmail(form)
+    } */
+
+    useEffect(() => {
+        const ocultarModal = (e) => {
+            const index = (e.target.className.indexOf('ocultar'));
+            if (index === -1) {
+                setIsCardOpen(false)
+                setIsUserOpen(false)
+            }
+        }
+        window.addEventListener('click', ocultarModal)
+        return () => {
+            window.removeEventListener('click', ocultarModal)
+        }
+    },[])
+    
+    useEffect(() => {
+        getCartItem()
+    },[quantityTotal()])
 
     return(
         <Products.Provider 
@@ -106,8 +127,13 @@ export function ProductsProvider({ children }){
             isCardOpen,
             cartItem,
             userEmail,
-            getUser,
+            isUserOpen,
+            setUserEmail,
+            openUser,
+            setIsCardOpen,
+            /* getUser, */
             total,
+            quantityTotal,
             onSustract,
             onAdd,
             setProducts,
