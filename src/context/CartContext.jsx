@@ -5,21 +5,13 @@ const Products = React.createContext()
 
 export function ProductsProvider({ children }){
 
-    /* const [products, setProducts] = useState([]) */
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
     const [isUserOpen, setIsUserOpen] = useState(false)
     const [userEmail, setUserEmail] = useState([])
     const db = getFirestore()
-    /* const ref = collection(db, 'products') */
     const refCart = collection(db, 'cartItem')
 
-    /* useEffect(() => {
-        getDocs(ref)
-        .then((snapShot) => {
-            setProducts(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
-          })
-    },[])    */ 
 
     const getCartItem = () => {
         getDocs(refCart)
@@ -132,10 +124,6 @@ export function ProductsProvider({ children }){
             deletFromCart,
             deletCart,
             setUserEmail,
-            /* 
-            products,
-            setIsCardOpen,
-            setProducts  */
         }}>
             {children}
         </Products.Provider>
