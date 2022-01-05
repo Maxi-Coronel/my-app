@@ -18,7 +18,7 @@ export const ItemDetail = ({ product }) => {
             </div>
             <div className='divDetail'>
                 <h2>{title}</h2>
-                <p>${price}</p>
+                <h3>${price}</h3>
                 <h4>{tituloDescripcion}</h4>
                 <p>{descripcion}</p>
                 <div className="flex">

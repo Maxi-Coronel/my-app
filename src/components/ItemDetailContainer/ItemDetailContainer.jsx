@@ -29,7 +29,7 @@ const ItemDetailContainer = () => {
                     key={item.id}
                     product={item}/>
                 </div>
-                : <p>Loading...</p>
+                : <div className="w-100"><img className="loading" src="https://eposta.bandirma.edu.tr/Content/images/loading.gif" alt="Loading" /></div>
             }
             </>
     )
