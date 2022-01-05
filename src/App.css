@@ -354,3 +354,8 @@ font-weight: bold;
 .mensaje{
   margin: 5% 10%;
 }
+
+.error{
+  font-size: 10px;
+  color: red;
+}

@@ -5,21 +5,21 @@ const Products = React.createContext()
 
 export function ProductsProvider({ children }){
 
-    const [products, setProducts] = useState([])
+    /* const [products, setProducts] = useState([]) */
     const [cartItem, setCartItem] = useState([])
     const [isCardOpen, setIsCardOpen] = useState(false)
     const [isUserOpen, setIsUserOpen] = useState(false)
     const [userEmail, setUserEmail] = useState([])
     const db = getFirestore()
-    const ref = collection(db, 'products')
+    /* const ref = collection(db, 'products') */
     const refCart = collection(db, 'cartItem')
 
-    useEffect(() => {
+    /* useEffect(() => {
         getDocs(ref)
         .then((snapShot) => {
             setProducts(snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data()})))
           })
-    },[])    
+    },[])    */ 
 
     const getCartItem = () => {
         getDocs(refCart)
@@ -27,7 +27,6 @@ export function ProductsProvider({ children }){
                 setCartItem(snapShot.docs.map((doc) => ({...doc.data()})))
             })
     }
-
 
     const total = () => {
         const sumaTotal = cartItem.reduce((x, y) => x + y.price * y.quantityCart, 0);
@@ -98,10 +97,6 @@ export function ProductsProvider({ children }){
         getCartItem()
     }
 
-    /* const getUser = (form) => {
-        setUserEmail(form)
-    } */
-
     useEffect(() => {
         const ocultarModal = (e) => {
             const index = (e.target.className.indexOf('ocultar'));
@@ -123,24 +118,24 @@ export function ProductsProvider({ children }){
     return(
         <Products.Provider 
         value={{
-            products,
-            isCardOpen,
             cartItem,
-            userEmail,
             isUserOpen,
-            setUserEmail,
-            openUser,
-            setIsCardOpen,
-            /* getUser, */
-            total,
-            quantityTotal,
-            onSustract,
+            userEmail,
+            isCardOpen,
             onAdd,
-            setProducts,
-            openCard,
+            onSustract,
             addToCart,
+            openUser,
+            openCard,
+            quantityTotal,
+            total,
             deletFromCart,
-            deletCart 
+            deletCart,
+            setUserEmail,
+            /* 
+            products,
+            setIsCardOpen,
+            setProducts  */
         }}>
             {children}
         </Products.Provider>

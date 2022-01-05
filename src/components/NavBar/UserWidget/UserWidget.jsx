@@ -11,8 +11,12 @@ export const UserWidget = () => {
         userEmail,
         setUserEmail
     } = useContext(Products)
+
+    const [errorValidacion, setErrorValidacion] = useState("")
+    const [emailEnUso, setEmailEnUso] = useState("")
     
     const db = getFirestore();
+    const refPerfiles = collection(db, 'perfiles')
 
     const [form, getForm] = useState({nombre:'', email:'', password:''})
 
@@ -32,34 +36,60 @@ export const UserWidget = () => {
         e.preventDefault()
         iniciarSesion()
     }
+
+    const errorUser = () => {
+        return( setErrorValidacion(<p className="error">Email o contraseña incorrecta</p>) )
+    }
+    const errorEmail = () => {
+        return( setEmailEnUso(<p className="error">Este email ya esta en uso...</p>) )
+    }
+    const campoIncompleto = () => {
+        return( setEmailEnUso(<p className="error">Completa los campos</p>) )
+    }
     
     const iniciarSesion = () => {
-        getDocs(collection(db, 'perfiles'))
+        getDocs(refPerfiles)
         .then((snapShot) => {
             const perfiles = snapShot.docs.map((doc) => {return{ id: doc.id, ...doc.data()}});
-            const a = (perfiles.filter((x) => x.email === form.email && x.password === form.password))
-            if (a.length !== 0) {
-                setUserEmail(a);
+            const autenticar = (perfiles.filter((x) => x.email === form.email && x.password === form.password))
+            console.log(autenticar);
+            if (autenticar.length !== 0) {
+                setUserEmail(autenticar);
             } else{
-                alert('email o contraseña incorrecto')
+                errorUser()
             }
         })
     }
     
     const addUsers = (e) => {
         e.preventDefault()
-        const ref = collection(db, 'perfiles');
-        const usuario = {
-            nombre: form.nombre,
-            email: form.email,
-            password: form.password
+        console.log(form.email, form.password);
+
+        if (form.email.length !== 0 && form.password.length !== 0) {
+            const usuario = {
+                nombre: form.nombre,
+                email: form.email,
+                password: form.password
+            }
+            getDocs(refPerfiles)
+            .then((snapShot) => {
+                const perfiles = snapShot.docs.map((doc) => {return{ id: doc.id, ...doc.data()}});
+                const validar = perfiles.filter((x) => x.email === form.email)
+
+                if (validar.length !== 0) {
+                    errorEmail()
+                }else {
+                    addDoc(refPerfiles, usuario)
+                    .then(({id}) => {
+                    const ref = doc(db, 'perfiles', id)
+                    updateDoc(ref, { id: id})
+                    })
+                    iniciarSesion()
+                }
+            })
+        }else {
+            campoIncompleto()
         }
-        addDoc(ref, usuario)
-        .then(({id}) => {
-            const ref = doc(db, 'perfiles', id)
-            updateDoc(ref, { id: id})
-        })
-        iniciarSesion()
     }
 
     return(
@@ -80,10 +110,13 @@ export const UserWidget = () => {
                     <div className='modal-cart'>
                         <form method="POST" className="ocultar form-users">
                             <input className="ocultar" type="text" name="nombre" placeholder="nombre" onChange={crearUser} />
-                            <input className="ocultar" type="email" name="email" placeholder="email" onChange={crearUser} />
-                            <input className="ocultar" type="password" name="password" placeholder="contraseña" onChange={crearUser} />
+                            <input className="ocultar" type="email" name="email" placeholder="email" onChange={crearUser} required />
+                            {errorValidacion}
+                            <input className="ocultar" type="password" name="password" placeholder="contraseña" onChange={crearUser} required />
+                            {errorValidacion}
                             <button className="ocultar btn" onClick={preInicio}>Iniciar sesión</button>
                             <button className="ocultar btn" onClick={addUsers}>Crear usuario</button>
+                            {emailEnUso}
                         </form>
                     </div>
                 </div>))
